@@ -1,0 +1,26 @@
+apiVersion: source.toolkit.fluxcd.io/v1beta1
+kind: HelmRepository
+metadata:
+  name: guestbook-charts
+  namespace: flux-system
+spec:
+  interval: 15m
+  url: https://ibm.github.io/helm101/
+  timeout: 3m
+---
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: devopscare-guestbook
+  namespace: devopscare-guestbook
+spec:
+  interval: 5m
+  chart:
+    spec:
+      chart: guestbook
+      version: 0.2.0
+      sourceRef:
+        kind: HelmRepository
+        name: guestbook-charts
+        namespace: flux-system
+      interval: 5m
